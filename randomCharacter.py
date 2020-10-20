@@ -41,7 +41,9 @@ def help_message():
 enter "!dnd" to get the attention of the bot.
 in the same message include your command:
     "character" generates a character for you.
-    "stats" gives you an array of stats. 4d6 are rolled seven times. The lowest die is dropped from each group, and the lowest group is dropped. This tends to build more powerful characters.
+    "stats" gives you an array of stats. 4d6 are rolled seven times. The 
+        lowest die is dropped from each group, and the lowest group is
+        dropped. This tends to build more powerful characters.
     "background" generates a background and feature for you.
     "help" shows you this message.```'''
 
@@ -49,7 +51,10 @@ in the same message include your command:
 def background():
     backgrounds = {'acolyte': 'shelter of the faithful', 'criminal/spy': 'criminal contact',
                    'folk hero': 'rustic hospitality', 'noble': 'position of privilege', 'sage': 'researcher',
-                   'soldier': 'military rank'}
+                   'soldier': 'military rank', 'charlatan': 'false identity', 'entertainer': 'by popular demand',
+                   'gladiator': 'by popular demand', 'guild artisan / guild merchant': 'guild membership',
+                   'hermit': 'discovery', 'knight': 'retainers', 'outlander': 'wanderer', 'pirate': 'bad reputation',
+                   'sailor': 'ships passage', 'urchin': 'city secrets'}
     bg = random.choice(list(backgrounds))
     feature = backgrounds[bg]
     return f'```Your background is {bg}, which grants you {feature}.```'
@@ -69,11 +74,15 @@ async def on_message(message):
     if '!dnd' in message.content.lower():
         if 'character' in message.content.lower():
             await message.channel.send(race_class())
+            print(f'{user} generated a character.')
         if 'stats' in message.content.lower():
             await message.channel.send(stat_roll())
+            print(f'{user} generated a stat roll')
         if 'background' in message.content.lower():
             await message.channel.send(background())
+            print(f'{user} generated a background')
         if 'help' in message.content.lower():
             await message.channel.send(help_message())
+            print(f'{user} asked for help')
 
 client.run(TOKEN)
