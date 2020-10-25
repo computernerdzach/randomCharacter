@@ -11,7 +11,7 @@ client = discord.Client()
 def race_class():
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling', 'goliath',
              'genasi', 'triton', 'kobold', 'bugbear']
-    classes = ['barbarian', 'wizard', 'paladin', 'bard', 'sorceror', 'rogue', 'fighter', 'cleric', 'druid', 'monk',
+    classes = ['barbarian', 'wizard', 'paladin', 'bard', 'sorcerer', 'rogue', 'fighter', 'cleric', 'druid', 'monk',
                'ranger', 'warlock']
     alignments = ['lawful good', 'lawful neutral', 'lawful evil', 'neutral good', 'true neutral', 'neutral evil',
                   'chaotic good', 'chaotic neutral', 'chaotic evil']
