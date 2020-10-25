@@ -25,7 +25,7 @@ def race_class():
 
 
 def stat_roll():
-    stats = [[], [], [], [], [], [], []]
+    stats = [[], [], [], [], [], []]
     newList = []
     for each in stats:
         each.append(random.randint(1, 6))
@@ -35,18 +35,22 @@ def stat_roll():
     for each in stats:
         each.remove(min(each))
         newList.append(sum(each))
-    newList.remove(min(newList))
+    # for each in newList:
+    for item in newList:
+        if item < 8:
+            newList[item] = 8
     return f'```Your stats are {newList[0]} {newList[1]} {newList[2]} {newList[3]} {newList[4]} {newList[5]}.```'
 
 
 def full_character():
     """
-    TODO: build a function that builds an entire character, including assigned stats
+    TODO: incorporate expanded skills
+    TODO: calculate ability modifiers
+    TODO: initiative, proficiency bonus
     :return:
     """
     # RACE AND CLASS
-    races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling', 'goliath',
-             'genasi', 'triton', 'kobold', 'bugbear']
+    races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
     classes = ['barbarian', 'wizard', 'paladin', 'bard', 'sorceror', 'rogue', 'fighter', 'cleric', 'druid', 'monk',
                'ranger', 'warlock']
     alignments = ['lawful good', 'lawful neutral', 'lawful evil', 'neutral good', 'true neutral', 'neutral evil',
@@ -68,7 +72,7 @@ def full_character():
     char_feat = backgrounds[char_background]
     back_feat = f'Your background is {char_background}, which grants you {char_feat}.'
     # STAT GENERATION AND ASSIGNMENT
-    stats = [[], [], [], [], [], [], []]
+    stats = [[], [], [], [], [], []]
     newList = []
     for each in stats:
         each.append(random.randint(1, 6))
@@ -78,41 +82,93 @@ def full_character():
     for each in stats:
         each.remove(min(each))
         newList.append(sum(each))
-    newList.remove(min(newList))
+    for each in newList:
+        if each < 8:
+            newList[each] = 8
     if ch_class == 'barbarian':
-        abilities = {'Constitution': sorted(newList)[5], 'Strength': sorted(newList)[4]}
+        abilities = {'Constitution': sorted(newList)[5], 'Strength': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Charisma': sorted(newList)[2],
+                     'Wisdom': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'bard':
-        abilities = {'Charisma': sorted(newList)[5], 'Intelligence': sorted(newList)[4]}
+        abilities = {'Charisma': sorted(newList)[5], 'Intelligence': sorted(newList)[4],
+                     'Constitution': sorted(newList)[3], 'Dexterity': sorted(newList)[2],
+                     'Wisdom': sorted(newList)[1], 'Strength': sorted(newList)[0]}
     elif ch_class == 'cleric':
-        abilities = {'Wisdom': sorted(newList)[5], 'Charisma': sorted(newList)[4]}
+        abilities = {'Wisdom': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Strength': sorted(newList)[2],
+                     'Charisma': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'druid':
-        abilities = {'Wisdom': sorted(newList)[5], 'Dexterity': sorted(newList)[4]}
+        abilities = {'Wisdom': sorted(newList)[5], 'Dexterity': sorted(newList)[4],
+                     'Constitution': sorted(newList)[3], 'Intelligence': sorted(newList)[2],
+                     'Strength': sorted(newList)[1], 'Charisma': sorted(newList)[0]}
     elif ch_class == 'fighter':
-        abilities = {'Strength': sorted(newList)[5], 'Constitution': sorted(newList)[4]}
+        abilities = {'Strength': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Wisdom': sorted(newList)[2],
+                     'Intelligence': sorted(newList)[1], 'Charisma': sorted(newList)[0]}
     elif ch_class == 'monk':
-        abilities = {'Dexterity': sorted(newList)[5], 'Wisdom': sorted(newList)[4]}
+        abilities = {'Dexterity': sorted(newList)[5], 'Wisdom': sorted(newList)[4],
+                     'Constitution': sorted(newList)[3], 'Strength': sorted(newList)[2],
+                     'Charisma': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'paladin':
-        abilities = {'Charisma': sorted(newList)[5], 'Strength': sorted(newList)[4]}
+        abilities = {'Strength': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Charisma': sorted(newList)[2],
+                     'Wisdom': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'ranger':
-        abilities = {'Strength': sorted(newList)[5], 'Dexterity': sorted(newList)[4]}
+        abilities = {'Dexterity': sorted(newList)[5], 'Wisdom': sorted(newList)[4],
+                     'Constitution': sorted(newList)[3], 'Charisma': sorted(newList)[2],
+                     'Strength': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'rogue':
-        abilities = {'Dexterity': sorted(newList)[5], 'Charisma': sorted(newList)[4]}
+        abilities = {'Dexterity': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Charisma': sorted(newList)[3], 'Wisdom': sorted(newList)[2],
+                     'Strength': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'sorcerer':
-        abilities = {'Constitution': sorted(newList)[5], 'Intelligence': sorted(newList)[4]}
+        abilities = {'Charisma': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Wisdom': sorted(newList)[3], 'Dexterity': sorted(newList)[2],
+                     'Intelligence': sorted(newList)[1], 'Strength': sorted(newList)[0]}
     elif ch_class == 'warlock':
-        abilities = {'Intelligence': sorted(newList)[5], 'Constitution': sorted(newList)[4]}
+        abilities = {'Charisma': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Wisdom': sorted(newList)[2],
+                     'Strength': sorted(newList)[1], 'Intelligence': sorted(newList)[0]}
     elif ch_class == 'wizard':
-        abilities = {'Intelligence': sorted(newList)[5], 'Wisdom': sorted(newList)[4]}
+        abilities = {'Intelligence': sorted(newList)[5], 'Constitution': sorted(newList)[4],
+                     'Dexterity': sorted(newList)[3], 'Wisdom': sorted(newList)[2],
+                     'Charisma': sorted(newList)[1], 'Strength': sorted(newList)[0]}
     stat_assign = ''
     for each in abilities:
         stat_assign += f'{each}: {str(abilities[each])}\n'
+    # RACIAL BONUSES
+    if ch_race == 'dwarf':
+        abilities['Constitution'] += 2
+        abilities['Wisdom'] += 1
+    elif ch_race == 'dragonborn':
+        abilities['Strength'] += 2
+        abilities['Charisma'] += 1
+    elif ch_race == 'elf':
+        abilities['Dexterity'] += 2
+        abilities['Wisdom'] += 1
+    elif ch_race == 'gnome':
+        abilities['Intelligence'] += 2
+        abilities['Constitution'] += 1
+    elif ch_race == 'halfling':
+        abilities['Dexterity'] += 2
+        abilities['Charisma'] += 1
+    elif ch_race == 'half-elf':
+        abilities['Constitution'] += 2
+        abilities['Wisdom'] += 1
+    elif ch_race == 'half-orc':
+        abilities['Strength'] += 2
+        abilities['Constitution'] += 1
+    elif ch_race == 'human':
+        for i in abilities:
+            abilities[i] += 1
+    elif ch_race == 'tiefling':
+        abilities['Charisma'] += 2
+        abilities['Intelligence'] += 1
     # RETURN STATEMENT
     return f'```' \
            f'{race_and_class} \n' \
            f'{back_feat} \n' \
            f'{stat_assign}' \
-           f'with remaining stats {sorted(newList)[3]}, {sorted(newList)[2]}, {sorted(newList)[1]}, ' \
-           f'{sorted(newList)[0]}.' \
            f'```'
 
 
@@ -125,7 +181,8 @@ in the same message include your command:
         lowest die is dropped from each group, and the lowest group is
         dropped. This tends to build more powerful characters.
     "background" generates a background and feature for you.
-    "help" shows you this message.```'''
+    "help" shows you this message.
+This bot assumes you are creating a character of level 0.```'''
 
 
 def background():
@@ -135,7 +192,9 @@ def background():
                    'gladiator': 'by popular demand', 'guild artisan / guild merchant': 'guild membership',
                    'hermit': 'discovery', 'knight': 'retainers', 'outlander': 'wanderer', 'pirate': 'bad reputation',
                    'sailor': 'ships passage', 'urchin': 'city secrets'}
-    return f'```Your background is {random.choice(list(backgrounds))}, which grants you {backgrounds[bg]}.```'
+    char_bg = random.choice(list(backgrounds))
+    char_feat = backgrounds[char_bg]
+    return f'```Your background is {char_bg}, which grants you {char_feat}.```'
 
 
 @client.event
