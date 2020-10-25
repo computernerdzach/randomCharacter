@@ -87,7 +87,7 @@ def full_character():
                    'sailor': 'ships passage', 'urchin': 'city secrets'}
     char_background = random.choice(list(backgrounds))
     char_feat = backgrounds[char_background]
-    back_feat = f'Your background is {char_background}, which grants you {char_feat}.\n'
+    back_feat = f'Your background is {char_background}, which grants you "{char_feat}."\n'
     # STAT GENERATION AND ASSIGNMENT
     stats = [[], [], [], [], [], []]
     newList = []
@@ -178,15 +178,13 @@ def full_character():
     elif ch_race == 'tiefling':
         abilities['Charisma'] += 2
         abilities['Intelligence'] += 1
-    stat_assign = ''
-    for each in abilities:
-        stat_assign += f'{each}: {str(abilities[each])}\n'
+    stat_assign = f'STR: {abilities["Strength"]}     DEX: {abilities["Dexterity"]}\n' \
+                  f'CON: {abilities["Constitution"]}     INT: {abilities["Intelligence"]}\n' \
+                  f'WIS: {abilities["Wisdom"]}     CHA: {abilities["Charisma"]}\n'
     # RETURN STATEMENT
-    return f'```' \
-           f'{randcstatement} \n' \
+    return f'```{randcstatement} \n' \
            f'{back_feat} \n' \
-           f'{stat_assign}' \
-           f'```'
+           f'{stat_assign}```'
 
 
 def help_message():
