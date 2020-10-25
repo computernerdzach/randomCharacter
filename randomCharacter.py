@@ -47,6 +47,8 @@ def full_character():
     TODO: incorporate expanded skills
     TODO: calculate ability modifiers
     TODO: initiative, proficiency bonus
+    TODO: expand on background and feature
+    TODO: look up and add class features and abilities
     :return:
     """
     # RACE AND CLASS
@@ -177,9 +179,10 @@ def help_message():
 enter "!dnd" to get the attention of the bot.
 in the same message include your command:
     "character" generates a character for you.
-    "stats" gives you an array of stats. 4d6 are rolled seven times. The 
-        lowest die is dropped from each group, and the lowest group is
-        dropped. This tends to build more powerful characters.
+    "stats" gives you an array of stats. 
+        * 4d6 are rolled six times. 
+        * The lowest die is dropped from each group. 
+        * Stats lower than 8, simply become 8.
     "background" generates a background and feature for you.
     "help" shows you this message.
 This bot assumes you are creating a character of level 0.```'''
