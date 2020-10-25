@@ -9,19 +9,26 @@ client = discord.Client()
 
 
 def race_class():
-    races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling', 'goliath',
-             'genasi', 'triton', 'kobold', 'bugbear']
-    classes = ['barbarian', 'wizard', 'paladin', 'bard', 'sorcerer', 'rogue', 'fighter', 'cleric', 'druid', 'monk',
-               'ranger', 'warlock']
+    races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
+    classes = {'barbarian': ('rage', 'unarmored defense'), 'wizard': ('spellcasting', 'arcane recovery'),
+               'paladin': ('divine sense', 'lay on hands'), 'bard': ('spellcasting', 'bardic inspiration'),
+               'sorcerer': ('spellcasting', 'sorcerous origin'), 'rogue': ('expertise', 'sneak attack', "thieve's cant"),
+               'fighter': ('fighting style', 'second wind'), 'cleric': ('spellcasting', 'divine domain'),
+               'druid': ('druidic', 'spellcasting'), 'monk': ('unarmored defense', 'martial arts'),
+               'ranger': ('favored enemy', 'natural explorer'), 'warlock': ('otherwordly patron', 'pact magic')}
     alignments = ['lawful good', 'lawful neutral', 'lawful evil', 'neutral good', 'true neutral', 'neutral evil',
                   'chaotic good', 'chaotic neutral', 'chaotic evil']
     ages = ['child', 'young', 'adult', 'middle-aged', 'older']
     ch_race = random.choice(races)
-    ch_class = random.choice(classes)
+    ch_class = random.choice(list(classes.keys()))
     ch_align = random.choice(alignments)
     ch_age = random.choice(ages)
-    character = f'```Your {ch_age} {ch_race} {ch_class} is {ch_align}.```'
-    return character
+    character = f'Your {ch_age} {ch_race} {ch_class} is {ch_align}.'
+    statement = f"``` {character} This character's class features are:\n"
+    for each in classes[ch_class]:
+        statement += f"    *    {each}\n"
+    statement += '```'
+    return statement
 
 
 def stat_roll():
@@ -53,16 +60,24 @@ def full_character():
     """
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
-    classes = ['barbarian', 'wizard', 'paladin', 'bard', 'sorceror', 'rogue', 'fighter', 'cleric', 'druid', 'monk',
-               'ranger', 'warlock']
+    classes = {'barbarian': ('rage', 'unarmored defense'), 'wizard': ('spellcasting', 'arcane recovery'),
+               'paladin': ('divine sense', 'lay on hands'), 'bard': ('spellcasting', 'bardic inspiration'),
+               'sorcerer': ('spellcasting', 'sorcerous origin'),
+               'rogue': ('expertise', 'sneak attack', "thieve's cant"),
+               'fighter': ('fighting style', 'second wind'), 'cleric': ('spellcasting', 'divine domain'),
+               'druid': ('druidic', 'spellcasting'), 'monk': ('unarmored defense', 'martial arts'),
+               'ranger': ('favored enemy', 'natural explorer'), 'warlock': ('otherwordly patron', 'pact magic')}
     alignments = ['lawful good', 'lawful neutral', 'lawful evil', 'neutral good', 'true neutral', 'neutral evil',
                   'chaotic good', 'chaotic neutral', 'chaotic evil']
     ages = ['child', 'young', 'adult', 'middle-aged', 'older']
     ch_race = random.choice(races)
-    ch_class = random.choice(classes)
+    ch_class = random.choice(list(classes.keys()))
     ch_align = random.choice(alignments)
     ch_age = random.choice(ages)
     race_and_class = f'Your {ch_age} {ch_race} {ch_class} is {ch_align}.'
+    randcstatement = f"{race_and_class} This character's class features are:\n"
+    for each in classes[ch_class]:
+        randcstatement += f"    *    {each}\n"
     # BACKGROUND AND FEATURE
     backgrounds = {'acolyte': 'shelter of the faithful', 'criminal/spy': 'criminal contact',
                    'folk hero': 'rustic hospitality', 'noble': 'position of privilege', 'sage': 'researcher',
@@ -72,7 +87,7 @@ def full_character():
                    'sailor': 'ships passage', 'urchin': 'city secrets'}
     char_background = random.choice(list(backgrounds))
     char_feat = backgrounds[char_background]
-    back_feat = f'Your background is {char_background}, which grants you {char_feat}.'
+    back_feat = f'Your background is {char_background}, which grants you {char_feat}.\n'
     # STAT GENERATION AND ASSIGNMENT
     stats = [[], [], [], [], [], []]
     newList = []
@@ -135,9 +150,6 @@ def full_character():
         abilities = {'Intelligence': sorted(newList)[5], 'Constitution': sorted(newList)[4],
                      'Dexterity': sorted(newList)[3], 'Wisdom': sorted(newList)[2],
                      'Charisma': sorted(newList)[1], 'Strength': sorted(newList)[0]}
-    stat_assign = ''
-    for each in abilities:
-        stat_assign += f'{each}: {str(abilities[each])}\n'
     # RACIAL BONUSES
     if ch_race == 'dwarf':
         abilities['Constitution'] += 2
@@ -166,9 +178,12 @@ def full_character():
     elif ch_race == 'tiefling':
         abilities['Charisma'] += 2
         abilities['Intelligence'] += 1
+    stat_assign = ''
+    for each in abilities:
+        stat_assign += f'{each}: {str(abilities[each])}\n'
     # RETURN STATEMENT
     return f'```' \
-           f'{race_and_class} \n' \
+           f'{randcstatement} \n' \
            f'{back_feat} \n' \
            f'{stat_assign}' \
            f'```'
