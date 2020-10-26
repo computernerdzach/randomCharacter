@@ -69,7 +69,7 @@ def background():
 
 
 def full_character():
-    # TODO incorporate expanded skills
+    # TODO incorporate expanded skills (racial, class, subclass, etc)
     # TODO initiative, proficiency bonus
     # TODO expand on background and feature
     # RACE AND CLASS
@@ -164,33 +164,39 @@ def full_character():
         abilities = {'Intelligence': (sorted(stat_list)[5], 0), 'Constitution': (sorted(stat_list)[4], 0),
                      'Dexterity': (sorted(stat_list)[3], 0), 'Wisdom': (sorted(stat_list)[2], 0),
                      'Charisma': (sorted(stat_list)[1], 0), 'Strength': (sorted(stat_list)[0], 0)}
+    strh = abilities["Strength"]
+    dexy = abilities["Dexterity"]
+    conn = abilities["Constitution"]
+    inte = abilities["Intelligence"]
+    wism = abilities["Wisdom"]
+    chaa = abilities["Charisma"]
     # RACIAL BONUSES
     if ch_race == 'dwarf':
-        abilities['Constitution'][0] += 2
-        abilities['Wisdom'][0] += 1
+        conn[0] += 2
+        wism[0] += 1
     elif ch_race == 'dragonborn':
-        abilities['Strength'][0] += 2
-        abilities['Charisma'][0] += 1
+        strh[0] += 2
+        chaa[0] += 1
     elif ch_race == 'elf':
-        abilities['Dexterity'][0] += 2
-        abilities['Wisdom'][0] += 1
+        dexy[0] += 2
+        wism[0] += 1
     elif ch_race == 'gnome':
-        abilities['Intelligence'][0] += 2
-        abilities['Constitution'][0] += 1
+        inte[0] += 2
+        conn[0] += 1
     elif ch_race == 'halfling':
-        abilities['Dexterity'][0] += 2
-        abilities['Charisma'][0] += 1
+        dexy[0] += 2
+        chaa[0] += 1
     elif ch_race == 'half-elf':
-        abilities['Charisma'][0] += 2
+        chaa[0] += 2
     elif ch_race == 'half-orc':
-        abilities['Strength'][0] += 2
-        abilities['Constitution'][0] += 1
+        strh[0] += 2
+        conn[0] += 1
     elif ch_race == 'human':
         for i in abilities:
             abilities[i][0] += 1
     elif ch_race == 'tiefling':
-        abilities['Charisma'][0] += 2
-        abilities['Intelligence'][0] += 1
+        chaa[0] += 2
+        inte[0] += 1
     # FIGURE AND INCLUDE STAT MODIFIERS
     for each in abilities:
         if abilities[each][0] <= 9:
@@ -207,15 +213,9 @@ def full_character():
             abilities[each][1] = 4
         elif abilities[each][0] == 20:
             abilities[each][1] = 5
-    STR = abilities["Strength"]
-    DEX = abilities["Dexterity"]
-    CON = abilities["Constitution"]
-    INT = abilities["Intelligence"]
-    WIS = abilities["Wisdom"]
-    CHA = abilities["Charisma"]
-    stat_assign = f'STR: {STR[0]} ({STR[1]})     DEX: {DEX[0]} ({DEX[1]})\n' \
-                  f'CON: {CON[0]} ({CON[1]})     INT: {INT[0]} ({INT[1]})\n' \
-                  f'WIS: {WIS[0]} ({WIS[1]})     CHA: {CHA[0]} ({CHA[1]})\n'
+    stat_assign = f'STR: {strh[0]} ({strh[1]})     DEX: {dexy[0]} ({dexy[1]})\n' \
+                  f'CON: {conn[0]} ({conn[1]})     INT: {inte[0]} ({inte[1]})\n' \
+                  f'WIS: {wism[0]} ({wism[1]})     CHA: {chaa[0]} ({chaa[1]})\n'
     if ch_race == 'half-elf':
         stat_assign += 'Racial Bonus: +1 bonus to two abilities (not charisma, which has already been raised by 2)\n'
     # RETURN STATEMENT
