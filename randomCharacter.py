@@ -71,9 +71,12 @@ def background():
 
 
 def full_character():
-    # TODO incorporate expanded skills (racial, class, subclass, etc)
-    # TODO initiative, proficiency bonus
-    # TODO expand on background and feature
+    # TODO: incorporate expanded skills (racial, class, subclass, etc)
+    # TODO: initiative, proficiency bonus
+    # TODO: expand on background and feature
+    # TODO: AC, HP
+    # TODO: proficiencies, expanded abilities (persuasion, sleight of hand, etc)
+    # TODO: spell selection and spell slots
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
     classes = {'barbarian': ('rage', 'unarmored defense'), 'wizard': ('spellcasting', 'arcane recovery'),
@@ -118,6 +121,10 @@ def full_character():
     for each in stat_list:
         if each < 8:
             each = 8
+    # for each class, initialize a stat dictionary, keys are stat names, values are a list:
+    # index 0 is the total stat score
+    # index 1 is the modifier, initialized to 0, later updated based on stat score
+    # each class assigns the stats highest to lowest based on class needs... this may need to be updated
     if ch_class == 'barbarian':
         abilities = {'Constitution': [sorted(stat_list)[5], 0], 'Strength': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Charisma': [sorted(stat_list)[2], 0],
@@ -166,6 +173,7 @@ def full_character():
         abilities = {'Intelligence': (sorted(stat_list)[5], 0), 'Constitution': (sorted(stat_list)[4], 0),
                      'Dexterity': (sorted(stat_list)[3], 0), 'Wisdom': (sorted(stat_list)[2], 0),
                      'Charisma': (sorted(stat_list)[1], 0), 'Strength': (sorted(stat_list)[0], 0)}
+    # variable shortcuts to refer to stat dictionary
     strh = abilities["Strength"]
     dexy = abilities["Dexterity"]
     conn = abilities["Constitution"]
@@ -189,6 +197,7 @@ def full_character():
         dexy[0] += 2
         chaa[0] += 1
     elif ch_race == 'half-elf':
+        # half elf gets +2 to cha and +1 to two others of their choice, this will be told to the user below
         chaa[0] += 2
     elif ch_race == 'half-orc':
         strh[0] += 2
@@ -216,11 +225,13 @@ def full_character():
         elif abilities[each][0] == 20:
             abilities[each][1] = 5
     # STATEMENT OF STATS AND MODIFIERS
-    stat_assign = f'STR: {strh[0]} ({strh[1]})     DEX: {dexy[0]} ({dexy[1]})\n' \
-                  f'CON: {conn[0]} ({conn[1]})     INT: {inte[0]} ({inte[1]})\n' \
-                  f'WIS: {wism[0]} ({wism[1]})     CHA: {chaa[0]} ({chaa[1]})\n'
+    stat_assign = f'    STR: {strh[0]} ({strh[1]})    DEX: {dexy[0]} ({dexy[1]})\n' \
+                  f'    CON: {conn[0]} ({conn[1]})    INT: {inte[0]} ({inte[1]})\n' \
+                  f'    WIS: {wism[0]} ({wism[1]})    CHA: {chaa[0]} ({chaa[1]})\n'
+    # if user race is half elf, they will be alerted to add +1 bonus to two abilities that aren't charisma, which has
+    # already been raised by +2
     if ch_race == 'half-elf':
-        stat_assign += 'Racial Bonus: +1 bonus to two abilities (not charisma, which has already been raised by 2)\n'
+        stat_assign += 'Racial Bonus: +1 bonus to two abilities (not charisma, which has already been raised by +2)\n'
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
                 'A gold coin minted in an unknown land', "A diary written in a language you don’t know",
@@ -322,7 +333,6 @@ async def on_message(message):
     user = str(message.author)
     if message.author == client.user:
         return
-
     if '!dnd' in message.content.lower():
         if ' character' in message.content.lower():
             await message.channel.send(race_class())
@@ -338,6 +348,5 @@ async def on_message(message):
         if ' help' in message.content.lower():
             await message.channel.send(help_message())
             print(f'{user} asked for help')
-
 
 client.run(TOKEN)
