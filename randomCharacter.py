@@ -225,9 +225,10 @@ def full_character():
         elif abilities[each][0] == 20:
             abilities[each][1] = 5
     # STATEMENT OF STATS AND MODIFIERS
-    stat_assign = f'    STR: {strh[0]} ({strh[1]})    DEX: {dexy[0]} ({dexy[1]})\n' \
-                  f'    CON: {conn[0]} ({conn[1]})    INT: {inte[0]} ({inte[1]})\n' \
-                  f'    WIS: {wism[0]} ({wism[1]})    CHA: {chaa[0]} ({chaa[1]})\n'
+    stat_assign = f'Here are your Stats / (Modifiers)\n' \
+                  f'    STR: {strh[0]} / ({strh[1]})    DEX: {dexy[0]} / ({dexy[1]})\n' \
+                  f'    CON: {conn[0]} / ({conn[1]})    INT: {inte[0]} / ({inte[1]})\n' \
+                  f'    WIS: {wism[0]} / ({wism[1]})    CHA: {chaa[0]} / ({chaa[1]})\n'
     # if user race is half elf, they will be alerted to add +1 bonus to two abilities that aren't charisma, which has
     # already been raised by +2
     if ch_race == 'half-elf':
