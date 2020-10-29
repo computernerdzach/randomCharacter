@@ -71,8 +71,8 @@ def background():
 
 
 def full_character():
-    # TODO: incorporate expanded skills (racial, class, subclass, etc)
     # TODO: initiative, proficiency bonus
+    # TODO: assign proficiencies
     # TODO: expand on background and feature
     # TODO: AC, HP
     # TODO: proficiencies, expanded abilities (persuasion, sleight of hand, etc)
@@ -225,7 +225,7 @@ def full_character():
         elif abilities[each][0] == 20:
             abilities[each][1] = 5
     # STATEMENT OF STATS AND MODIFIERS
-    stat_assign = f'Here are your Stats / (Modifiers)\n' \
+    stat_assign = f'Here are your Abilities / (Modifiers)\n' \
                   f'    STR: {strh[0]} / ({strh[1]})    DEX: {dexy[0]} / ({dexy[1]})\n' \
                   f'    CON: {conn[0]} / ({conn[1]})    INT: {inte[0]} / ({inte[1]})\n' \
                   f'    WIS: {wism[0]} / ({wism[1]})    CHA: {chaa[0]} / ({chaa[1]})\n'
@@ -233,6 +233,21 @@ def full_character():
     # already been raised by +2
     if ch_race == 'half-elf':
         stat_assign += 'Racial Bonus: +1 bonus to two abilities (not charisma, which has already been raised by +2)\n'
+    # nested dictionary, outer key is stat, inner key is ability and value is 0, will add modifier next
+    exp_skills = {'Strength': {'athletics': 0}, 'Dexterity': {'acrobatics': 0, 'sleight of hand': 0, 'stealth': 0},
+                  'Intelligence': {'arcana': 0, 'history': 0, 'investigation': 0, 'nature': 0, 'religion': 0},
+                  'Wisdom': {'animal handling': 0, 'insight': 0, 'medicine': 0, 'perception': 0, 'survival': 0},
+                  'Charisma': {'deception': 0, 'intimidation': 0, 'performance': 0, 'persuasion': 0}}
+    # nested for loop to spread out ability scores
+    for each in exp_skills:
+        for every in abilities:
+            if each == every:
+                for skateboard in exp_skills[each]:
+                    exp_skills[each][skateboard] += int(abilities[every][1])
+    stat_assign += f'Your expanded skills are Ability / Skill / Score \n'
+    for each in exp_skills:
+        for every in exp_skills[each]:
+            stat_assign += f'    {each} / {every} / {exp_skills[each][every]} \n'
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
                 'A gold coin minted in an unknown land', "A diary written in a language you don’t know",
@@ -269,10 +284,10 @@ def full_character():
                 'A silver spoon with an M engraved on the handle', 'A whistle made from gold-colored wood',
                 'A dead scarab beetle the size of your hand', 'Two toy soldiers, one with a missing head',
                 'A small box filled with different-sized buttons', 'A candle that can’t be lit',
-                'A tiny cage with no door', 'An old key', 'An indecipherable treasure map', 'A hilt from a broken sword',
-                'A rabbit’s foot', 'A glass eye', 'A cameo carved in the likeness of a hideous person',
-                'A silver skull the size of a coin', 'An alabaster mask',
-                'A pyramid of sticky black incense that smells very bad',
+                'A tiny cage with no door', 'An old key', 'An indecipherable treasure map',
+                'A hilt from a broken sword', 'A rabbit’s foot', 'A glass eye',
+                'A cameo carved in the likeness of a hideous person', 'A silver skull the size of a coin',
+                'An alabaster mask', 'A pyramid of sticky black incense that smells very bad',
                 'A nightcap that, when worn, gives you pleasant dreams', 'A single caltrop made from bone',
                 'A gold monocle frame without the lens', 'A 1-inch cube, each side painted a different color',
                 'A crystal knob from a door', 'A small packet filled with pink dust',
@@ -346,6 +361,7 @@ async def on_message(message):
             print(f'{user} generated a background')
         if ' fullcharacter' in message.content.lower():
             await message.channel.send(full_character())
+            print(f'{user} generated a complete character')
         if ' help' in message.content.lower():
             await message.channel.send(help_message())
             print(f'{user} asked for help')
