@@ -71,11 +71,9 @@ def background():
 
 
 def full_character():
-    # TODO: initiative, proficiency bonus
-    # TODO: assign proficiencies
+    # TODO: initiative, speed
     # TODO: expand on background and feature
     # TODO: AC, HP
-    # TODO: proficiencies, expanded abilities (persuasion, sleight of hand, etc)
     # TODO: spell selection and spell slots
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
@@ -170,9 +168,9 @@ def full_character():
                      'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
                      'Strength': [sorted(stat_list)[1], 0], 'Intelligence': [sorted(stat_list)[0], 0]}
     elif ch_class == 'wizard':
-        abilities = {'Intelligence': (sorted(stat_list)[5], 0), 'Constitution': (sorted(stat_list)[4], 0),
-                     'Dexterity': (sorted(stat_list)[3], 0), 'Wisdom': (sorted(stat_list)[2], 0),
-                     'Charisma': (sorted(stat_list)[1], 0), 'Strength': (sorted(stat_list)[0], 0)}
+        abilities = {'Intelligence': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
+                     'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
+                     'Charisma': [sorted(stat_list)[1], 0], 'Strength': [sorted(stat_list)[0], 0]}
     # variable shortcuts to refer to stat dictionary
     strh = abilities["Strength"]
     dexy = abilities["Dexterity"]
@@ -197,8 +195,13 @@ def full_character():
         dexy[0] += 2
         chaa[0] += 1
     elif ch_race == 'half-elf':
-        # half elf gets +2 to cha and +1 to two others of their choice, this will be told to the user below
         chaa[0] += 2
+        # half elf gets +2 to charisma and +1 to two other stats
+        non_char_stats = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom"]
+        h_elf_stats = random.sample(non_char_stats, 2)
+        for each in h_elf_stats:
+            print(abilities[each])
+            abilities[each][0] += 1
     elif ch_race == 'half-orc':
         strh[0] += 2
         conn[0] += 1
@@ -229,15 +232,105 @@ def full_character():
                   f'    STR: {strh[0]} / ({strh[1]})    DEX: {dexy[0]} / ({dexy[1]})\n' \
                   f'    CON: {conn[0]} / ({conn[1]})    INT: {inte[0]} / ({inte[1]})\n' \
                   f'    WIS: {wism[0]} / ({wism[1]})    CHA: {chaa[0]} / ({chaa[1]})\n'
-    # if user race is half elf, they will be alerted to add +1 bonus to two abilities that aren't charisma, which has
-    # already been raised by +2
-    if ch_race == 'half-elf':
-        stat_assign += 'Racial Bonus: +1 bonus to two abilities (not charisma, which has already been raised by +2)\n'
     # nested dictionary, outer key is stat, inner key is ability and value is 0, will add modifier next
     exp_skills = {'Strength': {'athletics': 0}, 'Dexterity': {'acrobatics': 0, 'sleight of hand': 0, 'stealth': 0},
                   'Intelligence': {'arcana': 0, 'history': 0, 'investigation': 0, 'nature': 0, 'religion': 0},
                   'Wisdom': {'animal handling': 0, 'insight': 0, 'medicine': 0, 'perception': 0, 'survival': 0},
                   'Charisma': {'deception': 0, 'intimidation': 0, 'performance': 0, 'persuasion': 0}}
+    all_skills = ['athletics', 'acrobatics', 'sleight of hand', 'stealth', 'arcana', 'history', 'investigation',
+                  'nature', 'religion', 'animal handling', 'insight', 'medicine', 'perception', 'survival', 'deception',
+                  'intimidation', 'performance', 'persuasion']
+    pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
+    char_pros = []
+    if ch_class == 'bard':
+        char_pros += random.sample(all_skills, 3)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if not every in char_pros:
+                    # print(str(exp_skills[each][every]) + '   ' + str(exp_skills[each]))
+                    exp_skills[each][every] += pro_bonus['half']
+                else:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'barbarian':
+        barb_pros = ['animal handling', 'athletics', 'intimidation', 'nature', 'perception', 'survival']
+        char_pros += random.sample(barb_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'cleric':
+        cler_pros = ['history', 'insight', 'medicine', 'persuasion', 'religion']
+        char_pros += random.sample(cler_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'druid':
+        drui_pros = ['arcana', 'animal handling', 'insight', 'medicine', 'nature', 'perception', 'religion', 'survival']
+        char_pros += random.sample(drui_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'fighter':
+        figh_pros = ['acrobatics', 'animal handling', 'athletics', 'history', 'insight', 'intimidation', 'perception',
+                     'survival']
+        char_pros += random.sample(figh_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'monk':
+        monk_pros = ['acrobatics', 'athletics', 'history', 'insight', 'religion', 'stealth']
+        char_pros += random.sample(monk_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'paladin':
+        pala_pros = ['athletics', 'insight', 'intimidation', 'medicine', 'persuasion', 'religion']
+        char_pros += random.sample(pala_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'ranger':
+        rang_pros = ['animal handling', 'athletics', 'insight', 'investigation', 'nature', 'perception', 'stealth',
+                     'survival']
+        char_pros += random.sample(rang_pros, 3)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'rogue':
+        rogu_pros = ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
+                     'performance', 'persuasion', 'sleight of hand', 'stealth']
+        char_pros += random.sample(rogu_pros, 4)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'sorcerer':
+        sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
+        char_pros += random.sample(sorc_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'warlock':
+        warl_pros = ['arcana', 'deception', 'history', 'intimidation', 'investigation', 'nature', 'religion']
+        char_pros += random.sample(warl_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
+    elif ch_class == 'wizard':
+        barb_pros = ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion']
+        char_pros += random.sample(barb_pros, 2)
+        for each in exp_skills:
+            for every in exp_skills[each]:
+                if every in char_pros:
+                    exp_skills[each][every] += pro_bonus['proficient']
     # nested for loop to spread out ability scores
     for each in exp_skills:
         for every in abilities:
@@ -335,6 +428,7 @@ in the same message include your command:
         * The lowest die is dropped from each group. 
         * Stats lower than 8, simply become 8.
     "background" generates a background and feature for you.
+    "fullcharacter" is in development, but generates a complete random character sheet.
     "help" shows you this message.
 This bot assumes you are creating a character of level 1.```'''
 
