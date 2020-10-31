@@ -71,9 +71,7 @@ def background():
 
 
 def full_character():
-    # TODO: initiative, speed
     # TODO: expand on background and feature
-    # TODO: AC, HP
     # TODO: spell selection and spell slots
     # TODO: Saving throws
     # RACE AND CLASS
@@ -344,7 +342,7 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
-                    
+
     # background proficiencies
     if char_background == 'acolyte':
         exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
@@ -406,6 +404,59 @@ def full_character():
         stat_assign += f'{each} \n'
         for every in exp_skills[each]:
             stat_assign += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
+
+    # TODO: ASSIGN #AC / #HP / SPEED / INITIATIVE
+    armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
+    char_ac = abilities['Dexterity'][1]
+    char_hp = 0
+    char_speed = 0
+    char_initiative = 0
+    if ch_class == 'barbarian':
+        char_ac += conn[1] + armors['unarmored']
+        char_hp += 12 + conn[1]
+        armor = 'unarmored'
+    elif ch_class == 'monk':
+        char_ac += wism[1] + armors['unarmored']
+        char_hp += 8 + conn[1]
+        armor = 'unarmored'
+    elif ch_class == 'bard':
+        char_ac += armors['padded']
+        char_hp += 8 + conn[1]
+        armor = 'padded'
+    elif ch_class == 'cleric':
+        char_ac += armors['chain shirt']
+        char_hp += 8 + conn[1]
+        armor = 'chain shirt'
+    elif ch_class == 'druid':
+        char_ac += armors['hide']
+        char_hp += 8 + conn[1]
+        armor = 'hide'
+    elif ch_class == 'fighter':
+        char_ac += armors['ring']
+        char_hp += 10 + conn[1]
+        armor = 'ring'
+    elif ch_class == 'paladin':
+        char_ac += armors['ring']
+        char_hp += 10 + conn[1]
+        armor = 'ring'
+    elif ch_class == 'ranger':
+        char_ac += armors['chain shirt']
+        char_hp += 10 + conn[1]
+        armor = 'chain shirt'
+    elif ch_class == 'rogue':
+        char_ac += armors['leather']
+        char_hp += 8 + conn[1]
+        armor = 'leather'
+    elif ch_class == 'warlock':
+        char_ac += armors['padded']
+        char_hp += 8 + conn[1]
+        armor = 'padded'
+    elif ch_class == 'sorcerer':
+        char_hp += 6 + conn[1]
+    elif ch_class == 'wizard':
+        char_hp += 6 + conn[1]
+    ac_speed_statement = f'Your AC is {str(char_ac)} with {armor} for armor. Your HP is {char_hp}. \n'
+
 
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
@@ -480,6 +531,7 @@ def full_character():
 
     # RETURN STATEMENT
     return f'```{r_and_c_statement} \n' \
+           f'{ac_speed_statement} \n' \
            f'{back_feat} \n' \
            f'{stat_assign} \n' \
            f'{start_statement} ```'
