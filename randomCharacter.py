@@ -75,6 +75,7 @@ def full_character():
     # TODO: expand on background and feature
     # TODO: AC, HP
     # TODO: spell selection and spell slots
+    # TODO: Saving throws
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
     classes = {'barbarian': ('rage', 'unarmored defense'), 'wizard': ('spellcasting', 'arcane recovery'),
@@ -92,7 +93,7 @@ def full_character():
     ch_align = random.choice(alignments)
     ch_age = random.choice(ages)
     race_and_class = f'Your {ch_age} {ch_race} {ch_class} is {ch_align}.'
-    r_and_c_statement = f"{race_and_class} This character's class features are:\n"
+    r_and_c_statement = f"{race_and_class} Their class features are:\n"
     for each in classes[ch_class]:
         r_and_c_statement += f"    *    {each}\n"
 
@@ -343,16 +344,68 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+                    
+    # background proficiencies
+    if char_background == 'acolyte':
+        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
+        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
+    elif char_background == 'charlatan':
+        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
+        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
+    elif char_background == 'criminal/spy':
+        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
+        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
+    elif char_background == 'entertainer':
+        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
+        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
+    elif char_background == 'folk hero':
+        exp_skills['Wisdom']['animal handling'] += pro_bonus['proficient']
+        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
+    elif char_background == 'gladiator':
+        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
+        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
+    elif char_background == 'guild artisan / guild merchant':
+        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+    elif char_background == 'hermit':
+        exp_skills['Wisdom']['medicine'] += pro_bonus['proficient']
+        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
+    elif char_background == 'knight':
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+    elif char_background == 'noble':
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+    elif char_background == 'outlander':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
+    elif char_background == 'pirate':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
+    elif char_background == 'sage':
+        exp_skills['Intelligence']['arcana'] += pro_bonus['proficient']
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+    elif char_background == 'sailor':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
+    elif char_background == 'soldier':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        exp_skills['Charisma']['intimidation'] += pro_bonus['proficient']
+    elif char_background == 'urchin':
+        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
+        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
+
     # nested for loop to spread out ability scores
     for each in exp_skills:
         for every in abilities:
             if each == every:
                 for skateboard in exp_skills[each]:
                     exp_skills[each][skateboard] += int(abilities[every][1])
-    stat_assign += f'Your expanded skills are Ability / Skill / Score \n'
+    stat_assign += f'\nYour expanded skills are skill / score \n'
     for each in exp_skills:
+        stat_assign += f'{each} \n'
         for every in exp_skills[each]:
-            stat_assign += f'    {each} / {every} / {exp_skills[each][every]} \n'
+            stat_assign += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
 
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
@@ -424,7 +477,7 @@ def full_character():
                 'A metal urn containing the ashes of a hero']
     start_item = random.choice(starters)
     start_statement = f'Among your belongings, some might find this interesting or unique:\n    *    {start_item}'
-    
+
     # RETURN STATEMENT
     return f'```{r_and_c_statement} \n' \
            f'{back_feat} \n' \
