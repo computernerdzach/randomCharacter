@@ -116,9 +116,9 @@ def full_character():
     for each in stats:
         each.remove(min(each))
         stat_list.append(sum(each))
-    for each in stat_list:
-        if each < 8:
-            each = 8
+    for i, s in enumerate(stat_list):
+        if s < 8:
+            stat_list[i] = 8
     # for each class, initialize a stat dictionary, keys are stat names, values are a list:
     # index 0 is the total stat score
     # index 1 is the modifier, initialized to 0, later updated based on stat score
@@ -197,10 +197,9 @@ def full_character():
     elif ch_race == 'half-elf':
         chaa[0] += 2
         # half elf gets +2 to charisma and +1 to two other stats
-        non_char_stats = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom"]
-        h_elf_stats = random.sample(non_char_stats, 2)
+        non_charisma_stats = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom"]
+        h_elf_stats = random.sample(non_charisma_stats, 2)
         for each in h_elf_stats:
-            print(abilities[each])
             abilities[each][0] += 1
     elif ch_race == 'half-orc':
         strh[0] += 2
@@ -240,6 +239,7 @@ def full_character():
     all_skills = ['athletics', 'acrobatics', 'sleight of hand', 'stealth', 'arcana', 'history', 'investigation',
                   'nature', 'religion', 'animal handling', 'insight', 'medicine', 'perception', 'survival', 'deception',
                   'intimidation', 'performance', 'persuasion']
+    # PROFICIENCIES assignment and calculation
     pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
     char_pros = []
     if ch_class == 'bard':
@@ -247,7 +247,6 @@ def full_character():
         for each in exp_skills:
             for every in exp_skills[each]:
                 if not every in char_pros:
-                    # print(str(exp_skills[each][every]) + '   ' + str(exp_skills[each]))
                     exp_skills[each][every] += pro_bonus['half']
                 else:
                     exp_skills[each][every] += pro_bonus['proficient']
@@ -306,10 +305,18 @@ def full_character():
         rogu_pros = ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
                      'performance', 'persuasion', 'sleight of hand', 'stealth']
         char_pros += random.sample(rogu_pros, 4)
+        char_expert = []
+        while len(char_expert) < 2:
+            new_choice = random.choice(rogu_pros)
+            if not new_choice in char_pros:
+                char_expert.append(new_choice)
         for each in exp_skills:
             for every in exp_skills[each]:
-                if every in char_pros:
+                if (every in char_pros) and (not every in char_expert):
                     exp_skills[each][every] += pro_bonus['proficient']
+                elif every in char_expert:
+                    exp_skills[each][every] += pro_bonus['expert']
+        print(f'proficiencies: {char_pros} \nexpertise: {exp_skills}')
     elif ch_class == 'sorcerer':
         sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
         char_pros += random.sample(sorc_pros, 2)
