@@ -95,6 +95,7 @@ def full_character():
     r_and_c_statement = f"{race_and_class} This character's class features are:\n"
     for each in classes[ch_class]:
         r_and_c_statement += f"    *    {each}\n"
+
     # BACKGROUND AND FEATURE
     backgrounds = {'acolyte': 'shelter of the faithful', 'criminal/spy': 'criminal contact',
                    'folk hero': 'rustic hospitality', 'noble': 'position of privilege', 'sage': 'researcher',
@@ -105,6 +106,7 @@ def full_character():
     char_background = random.choice(list(backgrounds))
     char_feat = backgrounds[char_background]
     back_feat = f'Your background is {char_background}, which grants you "{char_feat}."\n'
+
     # STAT GENERATION AND ASSIGNMENT
     stats = [[], [], [], [], [], []]
     stat_list = []
@@ -119,6 +121,7 @@ def full_character():
     for i, s in enumerate(stat_list):
         if s < 8:
             stat_list[i] = 8
+
     # for each class, initialize a stat dictionary, keys are stat names, values are a list:
     # index 0 is the total stat score
     # index 1 is the modifier, initialized to 0, later updated based on stat score
@@ -171,6 +174,7 @@ def full_character():
         abilities = {'Intelligence': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
                      'Charisma': [sorted(stat_list)[1], 0], 'Strength': [sorted(stat_list)[0], 0]}
+
     # variable shortcuts to refer to stat dictionary
     strh = abilities["Strength"]
     dexy = abilities["Dexterity"]
@@ -210,6 +214,7 @@ def full_character():
     elif ch_race == 'tiefling':
         chaa[0] += 2
         inte[0] += 1
+
     # FIGURE AND INCLUDE STAT MODIFIERS
     for each in abilities:
         if abilities[each][0] <= 9:
@@ -231,6 +236,7 @@ def full_character():
                   f'    STR: {strh[0]} / ({strh[1]})    DEX: {dexy[0]} / ({dexy[1]})\n' \
                   f'    CON: {conn[0]} / ({conn[1]})    INT: {inte[0]} / ({inte[1]})\n' \
                   f'    WIS: {wism[0]} / ({wism[1]})    CHA: {chaa[0]} / ({chaa[1]})\n'
+
     # nested dictionary, outer key is stat, inner key is ability and value is 0, will add modifier next
     exp_skills = {'Strength': {'athletics': 0}, 'Dexterity': {'acrobatics': 0, 'sleight of hand': 0, 'stealth': 0},
                   'Intelligence': {'arcana': 0, 'history': 0, 'investigation': 0, 'nature': 0, 'religion': 0},
@@ -316,7 +322,6 @@ def full_character():
                     exp_skills[each][every] += pro_bonus['proficient']
                 elif every in char_expert:
                     exp_skills[each][every] += pro_bonus['expert']
-        print(f'proficiencies: {char_pros} \nexpertise: {exp_skills}')
     elif ch_class == 'sorcerer':
         sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
         char_pros += random.sample(sorc_pros, 2)
@@ -348,6 +353,7 @@ def full_character():
     for each in exp_skills:
         for every in exp_skills[each]:
             stat_assign += f'    {each} / {every} / {exp_skills[each][every]} \n'
+
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
                 'A gold coin minted in an unknown land', "A diary written in a language you don’t know",
@@ -418,6 +424,7 @@ def full_character():
                 'A metal urn containing the ashes of a hero']
     start_item = random.choice(starters)
     start_statement = f'Among your belongings, some might find this interesting or unique:\n    *    {start_item}'
+    
     # RETURN STATEMENT
     return f'```{r_and_c_statement} \n' \
            f'{back_feat} \n' \
