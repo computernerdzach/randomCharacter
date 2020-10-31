@@ -409,8 +409,7 @@ def full_character():
     armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
     char_ac = abilities['Dexterity'][1]
     char_hp = 0
-    char_speed = 0
-    char_initiative = 0
+    char_initiative = random.randint(1, 20) + dexy[1]
     if ch_class == 'barbarian':
         char_ac += conn[1] + armors['unarmored']
         char_hp += 12 + conn[1]
@@ -455,8 +454,13 @@ def full_character():
         char_hp += 6 + conn[1]
     elif ch_class == 'wizard':
         char_hp += 6 + conn[1]
-    ac_speed_statement = f'Your AC is {str(char_ac)} with {armor} for armor. Your HP is {char_hp}. \n'
 
+    char_speed = 30
+    if (ch_race == 'dwarf') or (ch_race == 'gnome') or (ch_race == 'halfling'):
+        char_speed = 25
+
+    ac_speed_statement = f'Your AC is {str(char_ac)} with {armor} for armor. Your HP is {char_hp}. \n'
+    ac_speed_statement += f'Your base speed is {char_speed} and your initiative bonus is {char_initiative}. \n'
 
     # UNIQUE STARTING ITEM
     starters = ['A mummified goblin hand', 'A piece of crystal that faintly glows in the moonlight',
