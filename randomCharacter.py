@@ -251,9 +251,11 @@ def full_character():
                       f'You have {ch_spl_slot_num} level 1 spell slots.\n' \
                       f'Your spells are: \n'
     for each in ch_known_spells:
-        spell_statement += f'{each} \n'
+        spell_statement += f'{each.capitalize()} \n'
         for every in ch_known_spells[each]:
-            spell_statement += f'    {every} \n'
+            # spell_statement += f'    {every} \n'
+            for skateboard in every:
+                spell_statement += f'    {skateboard} \n'
 
     # variable shortcuts to refer to stat dictionary
     strh = abilities["Strength"]
@@ -486,7 +488,7 @@ def full_character():
         for every in exp_skills[each]:
             stat_assign += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
 
-    # ASSIGN HP, AC, SPEED, INITIATIVE TODO finish
+    # ASSIGN HP, AC, SPEED, INITIATIVE
     armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
     char_ac = abilities['Dexterity'][1]
     char_hp = 0
