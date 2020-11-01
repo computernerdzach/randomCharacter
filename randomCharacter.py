@@ -72,7 +72,6 @@ def background():
 
 def full_character():
     # TODO: expand on background and feature
-    # TODO: spell selection and spell slots
     # TODO: Saving throws
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
@@ -121,6 +120,12 @@ def full_character():
         if s < 8:
             stat_list[i] = 8
 
+    # piggy backing on to the stat assignment, we're going to add spell selection for casters
+    ch_cantrips_num = 0
+    ch_lvl1_spl_num = 0
+    ch_spl_slot_num = 0
+    ch_known_spells = {'cantrips': [], 'level 1': []}
+
     # for each class, initialize a stat dictionary, keys are stat names, values are a list:
     # index 0 is the total stat score
     # index 1 is the modifier, initialized to 0, later updated based on stat score
@@ -133,14 +138,45 @@ def full_character():
         abilities = {'Charisma': [sorted(stat_list)[5], 0], 'Intelligence': [sorted(stat_list)[4], 0],
                      'Constitution': [sorted(stat_list)[3], 0], 'Dexterity': [sorted(stat_list)[2], 0],
                      'Wisdom': [sorted(stat_list)[1], 0], 'Strength': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 2
+        ch_lvl1_spl_num += 4
+        ch_spl_slot_num += 2
+        bard_cants = ['blade ward', 'dancing lights', 'friends', 'light', 'mage hand', 'mending', 'message',
+                      'minor illusion', 'prestidigitation', 'true strike', 'vicious mockery']
+        bard_spel1 = ['animal friendship', 'bane', 'charm person', 'comprehend language', 'cure wounds',
+                      'detect magic', 'disguise self', 'dissonant whispers', 'faerie fire', 'feather fall',
+                      'healing word', 'heroism', "Tasha's hideous laghter", 'identify', 'illusory script',
+                      'longstrider', 'silent image', 'sleep', 'speak with animals', 'thunderwave', 'unseen servant']
+        ch_known_spells['cantrips'].append(list(random.sample(bard_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(bard_spel1, ch_lvl1_spl_num)))
     elif ch_class == 'cleric':
         abilities = {'Wisdom': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Strength': [sorted(stat_list)[2], 0],
                      'Charisma': [sorted(stat_list)[1], 0], 'Intelligence': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 3
+        ch_lvl1_spl_num += abilities['Wisdom'][1] + 1
+        ch_spl_slot_num += 2
+        cler_cants = ['guidance', 'light', 'mending', 'resistance', 'sacred flame', 'spare the dying', 'thaumaturgy']
+        cler_spel1 = ['bane', 'bless', 'command', 'create or destroy water', 'cure wounds', 'detect evil and good',
+                      'detect magic', 'detect poison and disease', 'guiding bold', 'healing word', 'inflict wounds',
+                      'protection from evil and good', 'purify food and drink', "sanctuary", 'shield of faith']
+        ch_known_spells['cantrips'].append(list(random.sample(cler_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(cler_spel1, ch_lvl1_spl_num)))
     elif ch_class == 'druid':
         abilities = {'Wisdom': [sorted(stat_list)[5], 0], 'Dexterity': [sorted(stat_list)[4], 0],
                      'Constitution': [sorted(stat_list)[3], 0], 'Intelligence': [sorted(stat_list)[2], 0],
                      'Strength': [sorted(stat_list)[1], 0], 'Charisma': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 2
+        ch_lvl1_spl_num += abilities['Wisdom'][1] + 1
+        ch_spl_slot_num += 2
+        drui_cants = ['druidcraft', 'guidance', 'mending', 'poison spray', 'produce flame', 'resistance', 'shillelagh',
+                      'thorn whip']
+        drui_spel1 = ['animal friendship', 'charm person', 'create or destroy water', 'cure wounds',
+                      'detect magic', 'detect poison and disease', 'entangle', 'faerie fire', 'fog cloud',
+                      'goodberry', 'healing word', "jump", 'longstrider', 'purify food and drink',
+                      'speak with animals', 'thunderwave']
+        ch_known_spells['cantrips'].append(list(random.sample(drui_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(drui_spel1, ch_lvl1_spl_num)))
     elif ch_class == 'fighter':
         abilities = {'Strength': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
@@ -165,14 +201,59 @@ def full_character():
         abilities = {'Charisma': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Wisdom': [sorted(stat_list)[3], 0], 'Dexterity': [sorted(stat_list)[2], 0],
                      'Intelligence': [sorted(stat_list)[1], 0], 'Strength': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 4
+        ch_lvl1_spl_num += 2
+        ch_spl_slot_num += 2
+        sorc_cants = ['acid splash', 'blade ward', 'chill touch', 'dancing lights', 'fire bolt', 'friends', 'light',
+                      'mage hand', 'mending', 'message', 'minor illusion', 'poison spray', 'prestidigitation',
+                      'ray of frost', 'shocking grasp', 'true strike']
+        sorc_spel1 = ['burning hands', 'charm person', 'chromatic orb', 'color spray', 'comprehend language',
+                      'detect magic', 'disguise self', 'expeditious retreat', 'false life', 'feather fall',
+                      'fogcloud', 'jump', 'mage armor', 'magic missile', 'ray of sickness', 'shield', 'silent image',
+                      'sleep', 'thunderwave', 'witch bolt']
+        ch_known_spells['cantrips'].append(list(random.sample(sorc_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(sorc_spel1, ch_lvl1_spl_num)))
     elif ch_class == 'warlock':
         abilities = {'Charisma': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
                      'Strength': [sorted(stat_list)[1], 0], 'Intelligence': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 2
+        ch_lvl1_spl_num += 2
+        ch_spl_slot_num += 1
+        warl_cants = ['blade ward', 'chill touch', 'eldritch blast', 'friends', 'mage hand', 'minor illusion',
+                      'poison spray', 'prestidigitation', 'true strike']
+        warl_spel1 = ['armor of Agathys', 'arms of Hadar', 'charm person', 'comprehend language', 'expeditious retreat',
+                      'hellish rebuke', 'hex', 'illusory script', 'protection from evil and good', 'unseen servant',
+                      'witch bolt']
+        ch_known_spells['cantrips'].append(list(random.sample(warl_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(warl_spel1, ch_lvl1_spl_num)))
     elif ch_class == 'wizard':
         abilities = {'Intelligence': [sorted(stat_list)[5], 0], 'Constitution': [sorted(stat_list)[4], 0],
                      'Dexterity': [sorted(stat_list)[3], 0], 'Wisdom': [sorted(stat_list)[2], 0],
                      'Charisma': [sorted(stat_list)[1], 0], 'Strength': [sorted(stat_list)[0], 0]}
+        ch_cantrips_num += 3
+        ch_lvl1_spl_num += abilities['Intelligence'][1] + 1
+        ch_spl_slot_num += 2
+        wizd_cants = ['acid splash', 'blade ward', 'chill touch', 'dancing lights', 'fire bolt', 'friends', 'light',
+                      'mage hand', 'mending', 'message', 'minor illusion', 'poison spray', 'prestidigitation',
+                      'ray of frost', 'shocking grasp', 'true strike']
+        wizd_spel1 = ['alarm', 'burning hands', 'charm person', 'chromatic orb', 'color spray', 'comprehend language',
+                      'detect magic', 'disguise self', 'expeditious retreat', 'false life', 'feather fall',
+                      'find familiar', 'floating disk', 'fogcloud', 'grease', "Tasha's hideous laughter", 'identify',
+                      'illusory script', 'jump', 'longstrider', 'mage armor', 'magic missile',
+                      'protection from evil and good', 'ray of sickness', 'shield', 'silent image', 'sleep',
+                      'thunderwave', 'unseen servant', 'witch bolt']
+        ch_known_spells['cantrips'].append(list(random.sample(wizd_cants, ch_cantrips_num)))
+        ch_known_spells['level 1'].append(list(random.sample(wizd_spel1, ch_lvl1_spl_num)))
+
+    # printout for spells
+    spell_statement = f'Your character knows {ch_cantrips_num} cantrips and {ch_lvl1_spl_num} level 1 spells.\n' \
+                      f'You have {ch_spl_slot_num} level 1 spell slots.\n' \
+                      f'Your spells are: \n'
+    for each in ch_known_spells:
+        spell_statement += f'{each} \n'
+        for every in ch_known_spells[each]:
+            spell_statement += f'    {every} \n'
 
     # variable shortcuts to refer to stat dictionary
     strh = abilities["Strength"]
@@ -405,11 +486,11 @@ def full_character():
         for every in exp_skills[each]:
             stat_assign += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
 
-    # TODO: ASSIGN #AC / #HP / SPEED / INITIATIVE
+    # ASSIGN HP, AC, SPEED, INITIATIVE TODO finish
     armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
     char_ac = abilities['Dexterity'][1]
     char_hp = 0
-    char_initiative = random.randint(1, 20) + dexy[1]
+    char_initiative = dexy[1]
     if ch_class == 'barbarian':
         char_ac += conn[1] + armors['unarmored']
         char_hp += 12 + conn[1]
@@ -422,6 +503,7 @@ def full_character():
         char_ac += armors['padded']
         char_hp += 8 + conn[1]
         armor = 'padded'
+        char_initiative += pro_bonus['half']
     elif ch_class == 'cleric':
         char_ac += armors['chain shirt']
         char_hp += 8 + conn[1]
@@ -452,8 +534,12 @@ def full_character():
         armor = 'padded'
     elif ch_class == 'sorcerer':
         char_hp += 6 + conn[1]
+        char_ac += armors['unarmored']
+        armor = 'unarmored'
     elif ch_class == 'wizard':
         char_hp += 6 + conn[1]
+        char_ac += armors['unarmored']
+        armor = 'unarmored'
 
     char_speed = 30
     if (ch_race == 'dwarf') or (ch_race == 'gnome') or (ch_race == 'halfling'):
@@ -538,6 +624,7 @@ def full_character():
            f'{ac_speed_statement} \n' \
            f'{back_feat} \n' \
            f'{stat_assign} \n' \
+           f'{spell_statement} \n' \
            f'{start_statement} ```'
 
 
