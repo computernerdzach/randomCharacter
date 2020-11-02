@@ -71,8 +71,6 @@ def background():
 
 
 def full_character():
-    # TODO: expand on background and feature
-    # TODO: Saving throws
     # RACE AND CLASS
     races = ['elf', 'dwarf', 'human', 'half-elf', 'half-orc', 'gnome', 'halfling', 'dragonborn', 'tiefling']
     classes = {'barbarian': ('rage', 'unarmored defense'), 'wizard': ('spellcasting', 'arcane recovery'),
@@ -103,7 +101,7 @@ def full_character():
                    'sailor': 'ships passage', 'urchin': 'city secrets'}
     char_background = random.choice(list(backgrounds))
     char_feat = backgrounds[char_background]
-    back_feat = f'Your background is {char_background}, which grants you "{char_feat}."\n'
+    back_feat_statement = f'Your background is {char_background}, which grants you "{char_feat}."\n'
 
     # STAT GENERATION AND ASSIGNMENT
     stats = [[], [], [], [], [], []]
@@ -314,7 +312,7 @@ def full_character():
         elif abilities[each][0] == 20:
             abilities[each][1] = 5
     # STATEMENT OF STATS AND MODIFIERS
-    stat_assign = f'Here are your Abilities / (Modifiers)\n' \
+    stat_assign_statement = f'Here are your Abilities / (Modifiers)\n' \
                   f'    STR: {strh[0]} / ({strh[1]})    DEX: {dexy[0]} / ({dexy[1]})\n' \
                   f'    CON: {conn[0]} / ({conn[1]})    INT: {inte[0]} / ({inte[1]})\n' \
                   f'    WIS: {wism[0]} / ({wism[1]})    CHA: {chaa[0]} / ({chaa[1]})\n'
@@ -328,10 +326,13 @@ def full_character():
                   'nature', 'religion', 'animal handling', 'insight', 'medicine', 'perception', 'survival', 'deception',
                   'intimidation', 'performance', 'persuasion']
     # PROFICIENCIES assignment and calculation
+    # also adding in saving throws
     pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
     char_pros = []
+    char_saves = []
     if ch_class == 'bard':
         char_pros += random.sample(all_skills, 3)
+        char_saves.extend(('dexterity', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if not every in char_pros:
@@ -341,6 +342,7 @@ def full_character():
     elif ch_class == 'barbarian':
         barb_pros = ['animal handling', 'athletics', 'intimidation', 'nature', 'perception', 'survival']
         char_pros += random.sample(barb_pros, 2)
+        char_saves.extend(('strength', 'constitution'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -348,6 +350,7 @@ def full_character():
     elif ch_class == 'cleric':
         cler_pros = ['history', 'insight', 'medicine', 'persuasion', 'religion']
         char_pros += random.sample(cler_pros, 2)
+        char_saves.extend(('wisdom', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -355,6 +358,7 @@ def full_character():
     elif ch_class == 'druid':
         drui_pros = ['arcana', 'animal handling', 'insight', 'medicine', 'nature', 'perception', 'religion', 'survival']
         char_pros += random.sample(drui_pros, 2)
+        char_saves.extend(('intelligence', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -363,6 +367,7 @@ def full_character():
         figh_pros = ['acrobatics', 'animal handling', 'athletics', 'history', 'insight', 'intimidation', 'perception',
                      'survival']
         char_pros += random.sample(figh_pros, 2)
+        char_saves.extend(('strength', 'constitution'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -370,6 +375,7 @@ def full_character():
     elif ch_class == 'monk':
         monk_pros = ['acrobatics', 'athletics', 'history', 'insight', 'religion', 'stealth']
         char_pros += random.sample(monk_pros, 2)
+        char_saves.extend(('strength', 'dexterity'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -377,6 +383,7 @@ def full_character():
     elif ch_class == 'paladin':
         pala_pros = ['athletics', 'insight', 'intimidation', 'medicine', 'persuasion', 'religion']
         char_pros += random.sample(pala_pros, 2)
+        char_saves.extend(('charisma', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -385,6 +392,7 @@ def full_character():
         rang_pros = ['animal handling', 'athletics', 'insight', 'investigation', 'nature', 'perception', 'stealth',
                      'survival']
         char_pros += random.sample(rang_pros, 3)
+        char_saves.extend(('strength', 'dexterity'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -393,7 +401,7 @@ def full_character():
         rogu_pros = ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
                      'performance', 'persuasion', 'sleight of hand', 'stealth']
         char_pros += random.sample(rogu_pros, 4)
-        char_expert = []
+        char_saves.extend(('dexterity', 'intelligence'))
         while len(char_expert) < 2:
             new_choice = random.choice(rogu_pros)
             if not new_choice in char_pros:
@@ -407,6 +415,7 @@ def full_character():
     elif ch_class == 'sorcerer':
         sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
         char_pros += random.sample(sorc_pros, 2)
+        char_saves.extend(('constitution', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -414,6 +423,7 @@ def full_character():
     elif ch_class == 'warlock':
         warl_pros = ['arcana', 'deception', 'history', 'intimidation', 'investigation', 'nature', 'religion']
         char_pros += random.sample(warl_pros, 2)
+        char_saves.extend(('charisma', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
@@ -421,10 +431,16 @@ def full_character():
     elif ch_class == 'wizard':
         barb_pros = ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion']
         char_pros += random.sample(barb_pros, 2)
+        char_saves.extend(('intelligence', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+    #SAVING THROW STATEMENT
+    saving_throws_statement = 'You may apply your proficiency bonus to the following saving throws: \n'
+    for each in char_saves:
+        saving_throws_statement += f'    *    {each}\n'
 
     # background proficiencies
     if char_background == 'acolyte':
@@ -482,11 +498,11 @@ def full_character():
             if each == every:
                 for skateboard in exp_skills[each]:
                     exp_skills[each][skateboard] += int(abilities[every][1])
-    stat_assign += f'\nYour expanded skills are skill / score \n'
+    stat_assign_statement += f'\nYour expanded skills are skill / score \n'
     for each in exp_skills:
-        stat_assign += f'{each} \n'
+        stat_assign_statement += f'{each} \n'
         for every in exp_skills[each]:
-            stat_assign += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
+            stat_assign_statement += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
 
     # ASSIGN HP, AC, SPEED, INITIATIVE
     armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
@@ -624,8 +640,9 @@ def full_character():
     # RETURN STATEMENT
     return f'```{r_and_c_statement} \n' \
            f'{ac_speed_statement} \n' \
-           f'{back_feat} \n' \
-           f'{stat_assign} \n' \
+           f'{back_feat_statement} \n' \
+           f'{stat_assign_statement} \n' \
+           f'{saving_throws_statement} \n' \
            f'{spell_statement} \n' \
            f'{start_statement} ```'
 
