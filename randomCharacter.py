@@ -327,8 +327,10 @@ def full_character():
                   'intimidation', 'performance', 'persuasion']
     # PROFICIENCIES assignment and calculation
     # also adding in saving throws
+    # TODO add saving throws that don't have proficiency bonus
     pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
     char_pros = []
+    saving_throws = {'strength': 0, 'dexterity': 0, 'constitution': 0, 'intelligence': 0, 'wisdom': 0, 'charisma': 0}
     char_saves = []
     if ch_class == 'bard':
         char_pros += random.sample(all_skills, 3)
@@ -339,6 +341,14 @@ def full_character():
                     exp_skills[each][every] += pro_bonus['half']
                 else:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'barbarian':
         barb_pros = ['animal handling', 'athletics', 'intimidation', 'nature', 'perception', 'survival']
         char_pros += random.sample(barb_pros, 2)
@@ -347,6 +357,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'cleric':
         cler_pros = ['history', 'insight', 'medicine', 'persuasion', 'religion']
         char_pros += random.sample(cler_pros, 2)
@@ -355,6 +373,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'druid':
         drui_pros = ['arcana', 'animal handling', 'insight', 'medicine', 'nature', 'perception', 'religion', 'survival']
         char_pros += random.sample(drui_pros, 2)
@@ -363,6 +389,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'fighter':
         figh_pros = ['acrobatics', 'animal handling', 'athletics', 'history', 'insight', 'intimidation', 'perception',
                      'survival']
@@ -372,6 +406,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'monk':
         monk_pros = ['acrobatics', 'athletics', 'history', 'insight', 'religion', 'stealth']
         char_pros += random.sample(monk_pros, 2)
@@ -380,6 +422,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'paladin':
         pala_pros = ['athletics', 'insight', 'intimidation', 'medicine', 'persuasion', 'religion']
         char_pros += random.sample(pala_pros, 2)
@@ -388,6 +438,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'ranger':
         rang_pros = ['animal handling', 'athletics', 'insight', 'investigation', 'nature', 'perception', 'stealth',
                      'survival']
@@ -397,11 +455,20 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'rogue':
         rogu_pros = ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
                      'performance', 'persuasion', 'sleight of hand', 'stealth']
         char_pros += random.sample(rogu_pros, 4)
         char_saves.extend(('dexterity', 'intelligence'))
+        char_expert = []
         while len(char_expert) < 2:
             new_choice = random.choice(rogu_pros)
             if not new_choice in char_pros:
@@ -412,6 +479,14 @@ def full_character():
                     exp_skills[each][every] += pro_bonus['proficient']
                 elif every in char_expert:
                     exp_skills[each][every] += pro_bonus['expert']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'sorcerer':
         sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
         char_pros += random.sample(sorc_pros, 2)
@@ -420,6 +495,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'warlock':
         warl_pros = ['arcana', 'deception', 'history', 'intimidation', 'investigation', 'nature', 'religion']
         char_pros += random.sample(warl_pros, 2)
@@ -428,6 +511,14 @@ def full_character():
             for every in exp_skills[each]:
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
+
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'wizard':
         barb_pros = ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion']
         char_pros += random.sample(barb_pros, 2)
@@ -437,10 +528,19 @@ def full_character():
                 if every in char_pros:
                     exp_skills[each][every] += pro_bonus['proficient']
 
+        for each in saving_throws:
+            for every in abilities:
+                if each.lower() == every.lower():
+                    saving_throws[each] += abilities[every][1]
+            for skateboard in char_saves:
+                if skateboard.lower() == each.lower():
+                    saving_throws[each] += pro_bonus['proficient']
+
     #SAVING THROW STATEMENT
-    saving_throws_statement = 'You may apply your proficiency bonus to the following saving throws: \n'
-    for each in char_saves:
-        saving_throws_statement += f'    *    {each}\n'
+    saving_throws_statement = 'Saving throw / (bonus): \n'
+    for each in saving_throws:
+        saving_throws_statement += f'    *    {each} / ({saving_throws[each]}) \n'
+
 
     # background proficiencies
     if char_background == 'acolyte':
