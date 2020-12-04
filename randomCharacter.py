@@ -325,15 +325,105 @@ def full_character():
     all_skills = ['athletics', 'acrobatics', 'sleight of hand', 'stealth', 'arcana', 'history', 'investigation',
                   'nature', 'religion', 'animal handling', 'insight', 'medicine', 'perception', 'survival', 'deception',
                   'intimidation', 'performance', 'persuasion']
+    # background proficiencies
+    char_pros = []
+    pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
+    if char_background == 'acolyte':
+        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
+        char_pros.append('insight')
+        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
+        char_pros.append('religion')
+    elif char_background == 'charlatan':
+        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
+        char_pros.append('deception')
+        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
+        char_pros.append('sleight of hand')
+    elif char_background == 'criminal/spy':
+        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
+        char_pros.append('deception')
+        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
+        char_pros.append('stealth')
+    elif char_background == 'entertainer':
+        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
+        char_pros.append('acrobatics')
+        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
+        char_pros.append('performance')
+    elif char_background == 'folk hero':
+        exp_skills['Wisdom']['animal handling'] += pro_bonus['proficient']
+        char_pros.append('animal handling')
+        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
+        char_pros.append('survival')
+    elif char_background == 'gladiator':
+        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
+        char_pros.append('acrobatics')
+        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
+        char_pros.append('performance')
+    elif char_background == 'guild artisan / guild merchant':
+        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
+        char_pros.append('insight')
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+        char_pros.append('persuasion')
+    elif char_background == 'hermit':
+        exp_skills['Wisdom']['medicine'] += pro_bonus['proficient']
+        char_pros.append('medicine')
+        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
+        char_pros.append('religion')
+    elif char_background == 'knight':
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+        char_pros.append('history')
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+        char_pros.append('persuasion')
+    elif char_background == 'noble':
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+        char_pros.append('history')
+        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
+        char_pros.append('persuasion')
+    elif char_background == 'outlander':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        char_pros.append('athletics')
+        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
+        char_pros.append('survival')
+    elif char_background == 'pirate':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        char_pros.append('athletics')
+        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
+        char_pros.append('perception')
+    elif char_background == 'sage':
+        exp_skills['Intelligence']['arcana'] += pro_bonus['proficient']
+        char_pros.append('arcana')
+        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
+        char_pros.append('history')
+    elif char_background == 'sailor':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        char_pros.append('athletics')
+        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
+        char_pros.append('perception')
+    elif char_background == 'soldier':
+        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
+        char_pros.append('athletics')
+        exp_skills['Charisma']['intimidation'] += pro_bonus['proficient']
+        char_pros.append('intimidation')
+    elif char_background == 'urchin':
+        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
+        char_pros.append('sleight of hand')
+        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
+        char_pros.append('stealth')
+
     # PROFICIENCIES assignment and calculation
     # also adding in saving throws
-    # TODO add saving throws that don't have proficiency bonus
-    pro_bonus = {'none': 0, 'half': 1, 'proficient': 2, 'expert': 4}
-    char_pros = []
     saving_throws = {'strength': 0, 'dexterity': 0, 'constitution': 0, 'intelligence': 0, 'wisdom': 0, 'charisma': 0}
     char_saves = []
+    char_expert = []
+
+    print(char_pros)
+
     if ch_class == 'bard':
-        char_pros += random.sample(all_skills, 3)
+        sample = random.sample(all_skills, 3)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(all_skills, 3)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('dexterity', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -351,7 +441,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'barbarian':
         barb_pros = ['animal handling', 'athletics', 'intimidation', 'nature', 'perception', 'survival']
-        char_pros += random.sample(barb_pros, 2)
+
+        sample = random.sample(barb_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(barb_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('strength', 'constitution'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -367,7 +463,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'cleric':
         cler_pros = ['history', 'insight', 'medicine', 'persuasion', 'religion']
-        char_pros += random.sample(cler_pros, 2)
+
+        sample = random.sample(cler_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(cler_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('wisdom', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -383,7 +485,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'druid':
         drui_pros = ['arcana', 'animal handling', 'insight', 'medicine', 'nature', 'perception', 'religion', 'survival']
-        char_pros += random.sample(drui_pros, 2)
+
+        sample = random.sample(drui_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(drui_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('intelligence', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -400,7 +508,13 @@ def full_character():
     elif ch_class == 'fighter':
         figh_pros = ['acrobatics', 'animal handling', 'athletics', 'history', 'insight', 'intimidation', 'perception',
                      'survival']
-        char_pros += random.sample(figh_pros, 2)
+
+        sample = random.sample(figh_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(figh_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('strength', 'constitution'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -416,7 +530,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'monk':
         monk_pros = ['acrobatics', 'athletics', 'history', 'insight', 'religion', 'stealth']
-        char_pros += random.sample(monk_pros, 2)
+
+        sample = random.sample(monk_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(monk_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('strength', 'dexterity'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -432,7 +552,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'paladin':
         pala_pros = ['athletics', 'insight', 'intimidation', 'medicine', 'persuasion', 'religion']
-        char_pros += random.sample(pala_pros, 2)
+
+        sample = random.sample(pala_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(pala_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('charisma', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -449,7 +575,13 @@ def full_character():
     elif ch_class == 'ranger':
         rang_pros = ['animal handling', 'athletics', 'insight', 'investigation', 'nature', 'perception', 'stealth',
                      'survival']
-        char_pros += random.sample(rang_pros, 3)
+
+        sample = random.sample(rang_pros, 3)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(rang_pros, 3)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('strength', 'dexterity'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -466,9 +598,14 @@ def full_character():
     elif ch_class == 'rogue':
         rogu_pros = ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation', 'perception',
                      'performance', 'persuasion', 'sleight of hand', 'stealth']
-        char_pros += random.sample(rogu_pros, 4)
+
+        sample = random.sample(rogu_pros, 4)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(rogu_pros, 4)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('dexterity', 'intelligence'))
-        char_expert = []
         while len(char_expert) < 2:
             new_choice = random.choice(rogu_pros)
             if not new_choice in char_pros:
@@ -489,7 +626,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'sorcerer':
         sorc_pros = ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion']
-        char_pros += random.sample(sorc_pros, 2)
+
+        sample = random.sample(sorc_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(sorc_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('constitution', 'charisma'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -505,7 +648,13 @@ def full_character():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'warlock':
         warl_pros = ['arcana', 'deception', 'history', 'intimidation', 'investigation', 'nature', 'religion']
-        char_pros += random.sample(warl_pros, 2)
+
+        sample = random.sample(warl_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(warl_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('charisma', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -520,8 +669,14 @@ def full_character():
                 if skateboard.lower() == each.lower():
                     saving_throws[each] += pro_bonus['proficient']
     elif ch_class == 'wizard':
-        barb_pros = ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion']
-        char_pros += random.sample(barb_pros, 2)
+        wizd_pros = ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion']
+
+        sample = random.sample(wizd_pros, 2)
+        while len(set(char_pros) & set(sample)) != 0:
+            sample = random.sample(wizd_pros, 2)
+        for each in sample:
+            char_pros.append(each)
+
         char_saves.extend(('intelligence', 'wisdom'))
         for each in exp_skills:
             for every in exp_skills[each]:
@@ -535,62 +690,12 @@ def full_character():
             for skateboard in char_saves:
                 if skateboard.lower() == each.lower():
                     saving_throws[each] += pro_bonus['proficient']
+    print(char_pros)
 
     #SAVING THROW STATEMENT
     saving_throws_statement = 'Saving throw / (bonus): \n'
     for each in saving_throws:
         saving_throws_statement += f'    *    {each} / ({saving_throws[each]}) \n'
-
-
-    # background proficiencies
-    if char_background == 'acolyte':
-        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
-        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
-    elif char_background == 'charlatan':
-        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
-        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
-    elif char_background == 'criminal/spy':
-        exp_skills['Charisma']['deception'] += pro_bonus['proficient']
-        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
-    elif char_background == 'entertainer':
-        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
-        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
-    elif char_background == 'folk hero':
-        exp_skills['Wisdom']['animal handling'] += pro_bonus['proficient']
-        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
-    elif char_background == 'gladiator':
-        exp_skills['Dexterity']['acrobatics'] += pro_bonus['proficient']
-        exp_skills['Charisma']['performance'] += pro_bonus['proficient']
-    elif char_background == 'guild artisan / guild merchant':
-        exp_skills['Wisdom']['insight'] += pro_bonus['proficient']
-        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
-    elif char_background == 'hermit':
-        exp_skills['Wisdom']['medicine'] += pro_bonus['proficient']
-        exp_skills['Intelligence']['religion'] += pro_bonus['proficient']
-    elif char_background == 'knight':
-        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
-        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
-    elif char_background == 'noble':
-        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
-        exp_skills['Charisma']['persuasion'] += pro_bonus['proficient']
-    elif char_background == 'outlander':
-        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
-        exp_skills['Wisdom']['survival'] += pro_bonus['proficient']
-    elif char_background == 'pirate':
-        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
-        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
-    elif char_background == 'sage':
-        exp_skills['Intelligence']['arcana'] += pro_bonus['proficient']
-        exp_skills['Intelligence']['history'] += pro_bonus['proficient']
-    elif char_background == 'sailor':
-        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
-        exp_skills['Wisdom']['perception'] += pro_bonus['proficient']
-    elif char_background == 'soldier':
-        exp_skills['Strength']['athletics'] += pro_bonus['proficient']
-        exp_skills['Charisma']['intimidation'] += pro_bonus['proficient']
-    elif char_background == 'urchin':
-        exp_skills['Dexterity']['sleight of hand'] += pro_bonus['proficient']
-        exp_skills['Dexterity']['stealth'] += pro_bonus['proficient']
 
     # nested for loop to spread out ability scores
     for each in exp_skills:
@@ -598,11 +703,17 @@ def full_character():
             if each == every:
                 for skateboard in exp_skills[each]:
                     exp_skills[each][skateboard] += int(abilities[every][1])
-    stat_assign_statement += f'\nYour expanded skills are skill / score \n'
+    stat_assign_statement += f'\nYour expanded skills are skill / score.\n'
+    stat_assign_statement += f'Proficiencies are marked with *. Expert proficiencies are marked with **.\n'
     for each in exp_skills:
         stat_assign_statement += f'{each} \n'
         for every in exp_skills[each]:
-            stat_assign_statement += ' ' * (17 - len(every)) + every + f' / {exp_skills[each][every]} \n'
+            if every in char_expert:
+                stat_assign_statement += '**' + ' ' * (18 - len(every)) + every + f' / {exp_skills[each][every]} \n'
+            elif every in char_pros:
+                stat_assign_statement += '*' + ' ' * (19 - len(every)) + every + f' / {exp_skills[each][every]} \n'
+            else:
+                stat_assign_statement += ' ' * (20 - len(every)) + every + f' / {exp_skills[each][every]} \n'
 
     # ASSIGN HP, AC, SPEED, INITIATIVE
     armors = {'unarmored': 10, 'padded': 11, 'leather': 11, 'hide': 12, 'chain shirt': 13, 'ring': 14}
